@@ -13,6 +13,10 @@ import cv2
 
 
 class MainWin(mw.Ui_MainWindow):
+    def __init__(self):
+        super(MainWin, self).__init__()
+        self.scaleX = 1
+        self.scaleY = 1
 
     def loadPic(self, widget, ui):
         file_path = QtWidgets.QFileDialog.getOpenFileName(widget, "选择加载图片", "./resource/picture/")
@@ -27,20 +31,27 @@ class MainWin(mw.Ui_MainWindow):
         scene.addItem(rect)
 
         ui.graphicsView.setScene(scene)
-        pass
+        ui.graphicsView.show()
 
-    @staticmethod
-    def zoomInPic(widget, ui):
-        # scene = ui.graphicsView.scene()
-        # item = scene.items()
-        # item.
-        print("[test] zoomInPic In")
-        file_path = QtWidgets.QFileDialog.getOpenFileName(widget, "选择加载图片", "./resource/picture/")
-        pass
+
+    def zoomInPic(self, widget, ui):
+        self.scaleX = 1.1
+        self.scaleY = 1.1
+        ui.graphicsView.scale(self.scaleX, self.scaleY)
+        ui.graphicsView.show()
+
+
+    def zoomOutPic(self, widget, ui):
+        self.scaleX = 0.9
+        self.scaleY = 0.9
+        ui.graphicsView.scale(self.scaleX, self.scaleY)
+        ui.graphicsView.show()
+
 
     def connect(self):
         ui.pushButton_loadPicture.clicked.connect(lambda: self.loadPic(widget, ui))
         ui.zoomIn.triggered.connect(lambda: self.zoomInPic(widget, ui))
+        ui.zoomOut.triggered.connect(lambda: self.zoomOutPic(widget, ui))
 
 
 if __name__ == "__main__":
