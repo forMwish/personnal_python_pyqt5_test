@@ -15,54 +15,54 @@ import cv2
 class MainWin(mw.Ui_MainWindow):
     def __init__(self):
         super(MainWin, self).__init__()
+        self.scene = QtWidgets.QGraphicsScene()
         self.scaleX = 1
         self.scaleY = 1
 
-    def loadPic(self, widget, ui):
+    def loadPic(self, widget):
+        print("[test] class:MainWin -> fun:loadPic -> In ")
         file_path = QtWidgets.QFileDialog.getOpenFileName(widget, "选择加载图片", "./resource/picture/")
         print("[test] picture path: ", file_path[0])
 
-        scene = QtWidgets.QGraphicsScene()
-
         pix = QtGui.QPixmap(file_path[0])
-        rect = QtWidgets.QGraphicsRectItem(0, 0, 100, 100)
+        #rect = QtWidgets.QGraphicsRectItem(0, 0, 100, 100)
 
-        scene.addPixmap(pix)
-        scene.addItem(rect)
+        self.scene.addPixmap(pix)
+        #self.scene.addItem(rect)
 
-        ui.graphicsView.setScene(scene)
-        ui.graphicsView.show()
+        self.graphicsView.setScene(self.scene)
+        self.graphicsView.show()
 
-
-    def zoomInPic(self, widget, ui):
+    def zoomInPic(self):
+        print("[test] class:MainWin -> fun:zoomInPic -> In ")
         self.scaleX = 1.1
         self.scaleY = 1.1
-        ui.graphicsView.scale(self.scaleX, self.scaleY)
-        ui.graphicsView.show()
+        self.graphicsView.scale(self.scaleX, self.scaleY)
+        self.graphicsView.show()
 
-
-    def zoomOutPic(self, widget, ui):
+    def zoomOutPic(self):
+        print("[test] class:MainWin -> fun:zoomOutPic -> In ")
         self.scaleX = 0.9
         self.scaleY = 0.9
-        ui.graphicsView.scale(self.scaleX, self.scaleY)
-        ui.graphicsView.show()
+        self.graphicsView.scale(self.scaleX, self.scaleY)
+        self.graphicsView.show()
 
-
-    def connect(self):
-        ui.pushButton_loadPicture.clicked.connect(lambda: self.loadPic(widget, ui))
-        ui.zoomIn.triggered.connect(lambda: self.zoomInPic(widget, ui))
-        ui.zoomOut.triggered.connect(lambda: self.zoomOutPic(widget, ui))
+    def connect(self, widget):
+        print("[test] class:MainWin -> fun:connect -> In ")
+        self.pushButton_loadPicture.clicked.connect(lambda: self.loadPic(widget))
+        self.zoomIn.triggered.connect(lambda: self.zoomInPic())
+        self.zoomOut.triggered.connect(lambda: self.zoomOutPic())
 
 
 if __name__ == "__main__":
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
-    widget = QtWidgets.QMainWindow()
+    widget1 = QtWidgets.QMainWindow()
 
     ui = MainWin()
-    ui.setupUi(widget)
-    ui.connect()
+    ui.setupUi(widget1)
+    ui.connect(widget1)
 
-    widget.show()
+    widget1.show()
     sys.exit(app.exec_())

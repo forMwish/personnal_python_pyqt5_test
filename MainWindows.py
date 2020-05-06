@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import CustomGraphicsView
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -45,7 +46,10 @@ class Ui_MainWindow(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
-        self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
+
+        #self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
+        self.graphicsView = CustomGraphicsView.CustomGraphicsView(self.centralwidget)
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
