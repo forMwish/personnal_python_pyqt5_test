@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 
 class CustomGraphicsView(QtWidgets.QGraphicsView):
@@ -6,11 +6,12 @@ class CustomGraphicsView(QtWidgets.QGraphicsView):
         super(CustomGraphicsView, self).__init__(*__args)
         self.pointMode = 0
         self.rectMode = 0
-        self.mousePressPos = [0, 0]
-        self.mouseMovePos0 = [0, 0]
-        self.mouseMovePos1 = [0, 0]
-        self.setMouseTracking(0)
+        self.mousePressPos = QtCore.QPoint()
+        self.mouseMovePos0 = QtCore.QPoint()
+        self.mouseMovePos1 = QtCore.QPoint()
+        self.setMouseTracking(1)
         self.setTransformationAnchor(self.NoAnchor)
+
         self.keyCtrlOn = 0
         self.mousePressOn = 0
 
@@ -26,31 +27,32 @@ class CustomGraphicsView(QtWidgets.QGraphicsView):
 
     def mouseMoveEvent(self, event: QtGui.QMouseEvent):
         print("mouseMoveEvent in")
+        self.mouseMovePos0 = self.mouseMovePos1
+        self.mouseMovePos1 = event.globalPos()
         if self.mousePressOn:
-            self.mouseMovePos0 = self.mouseMovePos1
-            self.mouseMovePos1 = event.globalPos()
             temp = self.mouseMovePos1 - self.mouseMovePos0
             self.translate(temp.x(), temp.y())
             self.show()
 
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         print("dragMoveEvent in")
-        pass
 
     def wheelEvent(self, event: QtGui.QWheelEvent):
         print("wheelEvnet in")
-        angle = event.angleDelta()
+
+        oldPos = self.mapToScene(event.pos())
 
         if self.keyCtrlOn:
-            self.setTransformationAnchor(self.AnchorUnderMouse)
+            angle = event.angleDelta()
             if angle.y() > 0:
                 self.scale(1.1, 1.1)
-                self.show()
             else:
                 self.scale(0.9, 0.9)
-                self.show()
-            self.setTransformationAnchor(self.NoAnchor)
-            #self.show()
+
+        newPos = self.mapToScene(event.pos())
+
+        deltaPos = newPos - oldPos
+        self.translate(deltaPos.x(), deltaPos.y())
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         print("keyPressEvnet in")
