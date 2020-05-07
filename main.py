@@ -9,7 +9,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import MainWindows as mw
-import cv2
 
 
 class MainWin(mw.Ui_MainWindow):
@@ -18,6 +17,7 @@ class MainWin(mw.Ui_MainWindow):
         self.scene = QtWidgets.QGraphicsScene()
         self.scaleX = 1
         self.scaleY = 1
+
 
     def loadPic(self, widget):
         print("[test] class:MainWin -> fun:loadPic -> In ")
